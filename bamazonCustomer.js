@@ -47,19 +47,22 @@ function userPrompt() {
             if (err) throw err;            
               var productQty = data[0].stock;
               var productPrice = data[0].price;
+
                  if (input.itemQty <= productQty) {             
                     console.log("\n~~~~~~~~~~~~~~~~~~~~~Congrats~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                    // console.log(input.itemChoice);
+              
                     connection.query("Update products set stock = " + (productQty - input.itemQty) + " WHERE ?", { item_id: input.itemChoice }, function (err, data) {
                         if (err) throw err;
                         console.log("************Your order has been placed*****************\n");
                         console.log("~~~~~~~~~~~~~~~Your total cost is $" + (productPrice * input.itemQty + "~~~~~~~~~~~~~~~~~" ))
                     })
                 } else {
-                    console.log("Insufficient Quantity!! Please start over");
+                    console.log("****************************************\n");
+                    console.log("Insufficient Quantity!! Please try again");
+                    console.log("****************************************\n");
                     getProducts()
                 }
-                connection.end();
+                // connection.end();
             })
         })
 }

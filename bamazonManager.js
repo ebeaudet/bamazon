@@ -48,21 +48,54 @@ function viewProducts() {
         "SELECT item_id, product_name, price, stock FROM products", function (err, data) {
             if (err) throw err;
             for (var i = 0; i < data.length; i++) {
-                console.log(data[i].item_id + ": " + data[i].product_name + ", Price: " + "$" + data[i].price  + "  Quantity: " + data[i].stock )
+                console.log(data[i].item_id + ": " + data[i].product_name + ", Price: " + "$" + data[i].price + "  Quantity: " + data[i].stock)
             }
             console.log("++++++++++++++++++++++++++++++++++++++++++++\n")
         })
 }
 
 function viewLowInventory() {
-    console.log("Welcome Manager!! Here is a list of our low inventoru...\n");
+    console.log("Welcome Manager!! Here is a list of our low inventory...\n");
     connection.query(
         "SELECT * FROM products WHERE stock < 5", function (err, data) {
             if (err) throw err;
             for (var i = 0; i < data.length; i++) {
-                console.log(data[i].item_id + ": " + data[i].product_name + ", Price: " + "$" + data[i].price + "  Quantity: " + data[i].stock )
+                console.log(data[i].item_id + ": " + data[i].product_name + ", Price: " + "$" + data[i].price + "  Quantity: " + data[i].stock)
             }
             console.log("++++++++++++++++++++++++++++++++++++++++++++\n")
         })
 }
+
+function addInventory() {
+    console.log("Welcome Manager!! What would you like to add to the inventory\n");
+    function userPrompt() {
+        inquirer
+            .prompt([
+                {
+                    name: "itemID",
+                    type: "input",
+                    message: "For which item would you like to update the invetory?"
+                },
+                {
+                    name: "itemCost",
+                    type: "input",
+                    message: "How much does this item cost?"
+                },
+                {
+                    name: "itemQty",
+                    type: "input",
+                    message: "How many would you like to add?",
+
+                },
+
+            ]).then(function (input) {
+
+                connection.query(" INSERT INTO products SET stock  = ?  WHERE item_id = ? ", [ ] , function (err, data) {
+                    if (err) throw err;
+                });
+            console.log("Your inventory has been updated\n");
+        })
+    }
+}
+
 managerOptions();
