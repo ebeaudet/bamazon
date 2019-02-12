@@ -72,14 +72,19 @@ function addInventory() {
         inquirer
             .prompt([
                 {
-                    name: "itemID",
+                    name: "itemName",
                     type: "input",
-                    message: "For which item would you like to update the invetory?"
+                    message: "Which item would you like to add to the invetory?"
                 },
                 {
                     name: "itemCost",
                     type: "input",
                     message: "How much does this item cost?"
+                },
+                {
+                    name: "itemDepartment",
+                    type: "input",
+                    message: "What department is this item in?"
                 },
                 {
                     name: "itemQty",
@@ -89,8 +94,10 @@ function addInventory() {
                 },
 
             ]).then(function (input) {
-
-                connection.query(" INSERT INTO products SET stock  = ?  WHERE item_id = ? ", [ ] , function (err, data) {
+                var query = "INSERT INTO products(product_name, department_name, price, stock";
+                query += "VALUES('" +  input.itemName + "','" + input.itemDepartment +"','" + input.itemCost + "'," + input.itemQty +"')"
+                
+                connection.query(query, function (err, data) {
                     if (err) throw err;
                 });
             console.log("Your inventory has been updated\n");
@@ -99,3 +106,5 @@ function addInventory() {
 }
 
 managerOptions();
+
+
